@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Inventory</string>
+
+    <!-- Title for the activity to add a new book [CHAR LIMIT=20] -->
+    <string name="editor_activity">Add a product</string>
+
+    <string name="supplier_0">Unknown</string>
+
+    <!-- Label for dropdown menu option if the supplier's name is Billy Co. [CHAR LIMIT=20] -->
+    <string name="supplier_1">Billy Co.</string>
+
+    <!-- abel for dropdown menu option if the supplier's name is Dilly Inc.[CHAR LIMIT=20] -->
+    <string name="supplier_2">Dilly Inc.</string>
+
+    <!-- abel for dropdown menu option if the supplier's name is Willy Ltd. [CHAR LIMIT=20] -->
+    <string name="supplier_3">Willy Ltd.</string>
+
+    <!--action save-->
+    <string name="action_save">Save</string>
+
+    <!--action delete-->
+    <string name="action_delete">Delete</string>
+
+    <string name="action_insert_dummy_data">Insert dummy data</string>
+    <string name="action_delete_all_entries">Delete all products</string>
+</resources>

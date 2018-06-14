@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- These are the options displayed in the supplier dropdown menu -->
+    <string-array name="array_supplier_options">
+        <item>@string/supplier_0</item>
+        <item>@string/supplier_1</item>
+        <item>@string/supplier_2</item>
+        <item>@string/supplier_3</item>
+    </string-array>
+</resources>
