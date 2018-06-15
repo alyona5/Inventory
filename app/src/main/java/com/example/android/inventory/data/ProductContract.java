@@ -46,13 +46,13 @@ public final class ProductContract {
          * Name of the supplier of the product
          * Type: INTEGER
          */
-        public final static String COLUMN_INV_SUPPLIER = "supplier name";
+        public final static String COLUMN_INV_SUPPLIER = "supplier_name";
 
         /**
          * Phone number of the supplier
          * Type: INTEGER
          */
-        public final static String COLUMN_INV_SUPPLIER_PHONE = "supplier phone number";
+        public final static String COLUMN_INV_SUPPLIER_PHONE = "supplier_phone_number";
 
         //Possible variants of the supplier of the product
         public static final int UNKNOWN_SUPPLIER = 0;

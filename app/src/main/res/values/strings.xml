@@ -1,18 +1,40 @@
 <resources>
     <string name="app_name">Inventory</string>
 
-    <!-- Title for the activity to add a new book [CHAR LIMIT=20] -->
-    <string name="editor_activity">Add a product</string>
+    <!--Title of the product information section [CHAR LIMIT=50} -->
+    <string name="product_information">Product information</string>
 
+    <!--Name of the product [CHAR LIMIT=50] -->
+    <string name="product_name">Name of the product</string>
+
+    <!--Price of the book [CHAR LIMIT=20] -->
+    <string name="price">Price</string>
+
+    <!--Quantity of the books [CHAR LIMIT=20] -->
+    <string name="quantity">Quantity</string>
+
+    <!--Information about the supplier [CHAR LIMIT=50] -->
+    <string name="supplier_information">Supplier information</string>
+
+    <!-- The name of the supplier [CHAR LIMIT=20]-->
+    <string name="supplier_name">Supplier name</string>
+
+    <!--The text for the phone number of the supplier-->
+    <string name="phone_number_supplier">Supplier phone number</string>
+
+    <!-- Title for the activity to add a new book [CHAR LIMIT=20] -->
+    <string name="editor_activity">Add a book</string>
+
+    <!-- Label for dropdown menu option if the supplier's name is not selected [CHAR LIMIT=20] -->
     <string name="supplier_0">Unknown</string>
 
     <!-- Label for dropdown menu option if the supplier's name is Billy Co. [CHAR LIMIT=20] -->
     <string name="supplier_1">Billy Co.</string>
 
-    <!-- abel for dropdown menu option if the supplier's name is Dilly Inc.[CHAR LIMIT=20] -->
+    <!-- Label for dropdown menu option if the supplier's name is Dilly Inc.[CHAR LIMIT=20] -->
     <string name="supplier_2">Dilly Inc.</string>
 
-    <!-- abel for dropdown menu option if the supplier's name is Willy Ltd. [CHAR LIMIT=20] -->
+    <!-- Label for dropdown menu option if the supplier's name is Willy Ltd. [CHAR LIMIT=20] -->
     <string name="supplier_3">Willy Ltd.</string>
 
     <!--action save-->
@@ -21,6 +43,9 @@
     <!--action delete-->
     <string name="action_delete">Delete</string>
 
+    <!-- Label for overflow menu option that inserts fake product data into the app [CHAR LIMIT=20] -->
     <string name="action_insert_dummy_data">Insert dummy data</string>
+
+    <!-- Label for overflow menu option that deletes all product data in the app [CHAR LIMIT=20] -->
     <string name="action_delete_all_entries">Delete all products</string>
 </resources>

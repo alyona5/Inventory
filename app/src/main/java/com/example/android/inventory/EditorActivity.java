@@ -85,7 +85,6 @@ public class EditorActivity extends AppCompatActivity{
                     }
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             mSupplier = ProductContract.ProductEntry.UNKNOWN_SUPPLIER;

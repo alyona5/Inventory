@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -75,7 +76,7 @@ public class CatalogActivity extends AppCompatActivity {
         TextView displayView = (TextView) findViewById(R.id.text_view_product);
 
         try {
-            displayView.setText("The inventory table contains: " + cursor.getCount() + " products.\n\n");
+            displayView.setText("The inventory table contains: " + cursor.getCount() + " books.\n\n");
             displayView.append(ProductContract.ProductEntry._ID + " - " +
                     ProductContract.ProductEntry.COLUMN_INV_NAME + " - " +
                     ProductContract.ProductEntry.COLUMN_INV_PRICE + " - " +
@@ -114,13 +115,18 @@ public class CatalogActivity extends AppCompatActivity {
         //Create a ContentValues object where column names are the keys, and
         //product's attributes are the values
         ContentValues values = new ContentValues();
-        values.put(ProductContract.ProductEntry.COLUMN_INV_NAME, "Laptop");
+        values.put(ProductContract.ProductEntry.COLUMN_INV_NAME, "Inferno");
         values.put(ProductContract.ProductEntry.COLUMN_INV_PRICE, 600);
         values.put(ProductContract.ProductEntry.COLUMN_INV_QUANTITY, 10);
         values.put(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER, ProductContract.ProductEntry.UNKNOWN_SUPPLIER);
         values.put(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER_PHONE, 0305550330);
 
         long newRowId = db.insert(ProductContract.ProductEntry.TABLE_NAME, null, values);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_catalog, menu);
+        return true;
     }
 
     @Override

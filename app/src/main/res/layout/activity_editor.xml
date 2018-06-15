@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,20 +9,22 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textSize="18sp"
+        android:layout_marginLeft="@dimen/activity_margin"
+        android:layout_marginRight="@dimen/activity_margin"
+        android:layout_marginTop="@dimen/activity_half_margin"
+        android:text="@string/product_information"
         android:textColor="@color/colorPrimary"
-        android:text="Product Information"/>
+        android:textSize="@dimen/text"
+        android:textStyle="bold" />
 
     <EditText
+        android:id="@+id/product_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/product_name"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:inputType="textCapWords"
-        android:hint="Name of the product"/>
+        android:layout_marginBottom="@dimen/activity_half_margin"
+        android:layout_marginLeft="@dimen/activity_margin"
+        android:layout_marginRight="@dimen/activity_margin"
+        android:hint="@string/product_name" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,33 +32,36 @@
         android:orientation="horizontal">
 
         <EditText
+            android:id="@+id/price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginRight="@dimen/activity_margin"
             android:layout_weight="1"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:id="@+id/price"
-            android:inputType="number"
-            android:hint="Price"/>
+            android:hint="@string/price"
+            android:inputType="number" />
 
         <EditText
+            android:id="@+id/quantity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/activity_margin"
             android:layout_weight="1"
-            android:id="@+id/quantity"
-            android:inputType="number"
-            android:layout_marginRight="16dp"
-            android:hint="Quantity"/>
+            android:hint="@string/quantity"
+            android:inputType="number" />
 
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:layout_marginLeft="@dimen/activity_margin"
+        android:layout_marginRight="@dimen/activity_margin"
+        android:layout_marginTop="@dimen/activity_half_margin"
+        android:text="@string/supplier_information"
         android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
-        android:text="Supplier Information"/>
+        android:textSize="@dimen/text"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,15 +76,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:textSize="18dp"
-                android:text="Supplier name"/>
+                android:layout_marginLeft="@dimen/activity_margin"
+                android:text="@string/supplier_name"
+                android:textSize="@dimen/text" />
 
             <Spinner
+                android:id="@+id/spinner_supplier_name"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:spinnerMode="dropdown"
-                android:id="@+id/spinner_supplier_name"/>
+                android:layout_height="@dimen/spinner_height"
+                android:spinnerMode="dropdown" />
 
         </LinearLayout>
 
@@ -92,18 +96,19 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_margin"
                 android:layout_weight="1"
-                android:text="Supplie phone number"
-                android:textSize="18sp"
-                android:layout_marginLeft="16dp"/>
+                android:minHeight="@dimen/min_height"
+                android:text="@string/phone_number_supplier"
+                android:textSize="@dimen/text" />
 
             <EditText
+                android:id="@+id/supplier_phone"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:layout_marginRight="16dp"
-                android:id="@+id/supplier_phone"/>
+                android:layout_marginRight="@dimen/activity_margin"
+                android:layout_weight="1"
+                android:inputType="phone" />
         </LinearLayout>
 
     </LinearLayout>
