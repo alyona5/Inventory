@@ -18,14 +18,16 @@
         </activity>
         <activity
             android:name=".EditorActivity"
-            android:label="@string/editor_activity"
-            android:theme="@style/EditorTheme"
-            android:parentActivityName=".CatalogActivity">
+            android:parentActivityName=".CatalogActivity"
+            android:theme="@style/EditorTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CatalogActivity"/>
-
         </activity>
+        <provider
+            android:name=".data.ProductProvider"
+            android:authorities="com.example.android.inventory"
+            android:exported="false" />
     </application>
 
 </manifest>

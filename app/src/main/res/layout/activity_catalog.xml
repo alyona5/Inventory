@@ -6,11 +6,36 @@
     android:layout_height="match_parent"
     tools:context="com.example.android.inventory.CatalogActivity">
 
-    <TextView
-        android:id="@+id/text_view_product"
+    <ListView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/activity_margin" />
+        android:layout_height="match_parent">
+
+    </ListView>
+
+    <RelativeLayout
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/empty_image"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/files_empty"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/empty_title_text"
+            android:layout_below="@id/empty_image"
+            android:layout_centerHorizontal="true"
+            android:text="@string/empty_title"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -20,4 +45,5 @@
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/activity_margin"
         android:src="@drawable/ic_fab" />
+
 </RelativeLayout>

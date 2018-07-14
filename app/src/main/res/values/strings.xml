@@ -48,4 +48,20 @@
 
     <!-- Label for overflow menu option that deletes all product data in the app [CHAR LIMIT=20] -->
     <string name="action_delete_all_entries">Delete all products</string>
+    <string name="Toast1">Error with saving the product</string>
+    <string name="Toast2">Product is saved with the row ID:</string>
+    <string name="error_msg_1">One or more values are not filled in</string>
+    <string name="empty_title">Not a single product is here</string>
+    <string name="title_add_product">Add a product</string>
+    <string name="title_edit_product">Edit product</string>
+    <string name="editor_update_product_string">Failed to update</string>
+    <string name="editor_update_product_successful">Success</string>
+    <string name="unsaved_changes_dialog_message">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing_message">Keep editing</string>
+    <string name="delete_product_dialog_message">Delete this product?</string>
+    <string name="deldete_dialog_message">Delete</string>
+    <string name="cancel_dialog_message">Cancel</string>
+    <string name="editor_delete_product_failed">Error with deleting the product</string>
+    <string name="editor_delete_product_successful">Product is deleted</string>
 </resources>
