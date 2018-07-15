@@ -42,7 +42,7 @@ public class ProductDbHelper extends SQLiteOpenHelper {
 
     //This is called when the database needs an upgrade
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //The database is still at version 1, so there is nothing can be done here.
     }
 

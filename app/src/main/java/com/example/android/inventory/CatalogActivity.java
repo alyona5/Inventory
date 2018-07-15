@@ -28,7 +28,7 @@ import java.util.PriorityQueue;
 
 //Displays list of products that were entered and stored in the app
 
-public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     //Identifier for the product data loader
     private static final int PRODUCT_LOADER = 0;
@@ -81,7 +81,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
 
     //Helper method to insert hard coded data into the database, for debugging purposes only
-    private void insertProduct(){
+    private void insertProduct() {
         //Create a ContentValues object where column names are the keys, and
         //product's attributes are the values
         ContentValues values = new ContentValues();
@@ -95,7 +95,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
 
     //Helper method to delete all pets
-    private void deleteAllProducts(){
+    private void deleteAllProducts() {
         int rowsDeleted = getContentResolver().delete(ProductContract.ProductEntry.CONTENT_URI, null, null);
         Log.v("Catalog Activity ", rowsDeleted + "rows deleted from the database");
     }
@@ -109,9 +109,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 insertProduct();
@@ -124,7 +124,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle){
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         //Projection that specifies the columns from the table
         String[] projection = {
                 ProductContract.ProductEntry._ID,
@@ -142,12 +142,12 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data){
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursorAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader){
+    public void onLoaderReset(Loader<Cursor> loader) {
         //Callback is called when the data is needed to be deleted
         mCursorAdapter.swapCursor(null);
     }

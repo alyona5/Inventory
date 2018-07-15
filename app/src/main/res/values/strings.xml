@@ -48,20 +48,52 @@
 
     <!-- Label for overflow menu option that deletes all product data in the app [CHAR LIMIT=20] -->
     <string name="action_delete_all_entries">Delete all products</string>
+
+    <!-- Error message for saving the product [CHAR LIMIT=100]-->
     <string name="Toast1">Error with saving the product</string>
+
+    <!-- Message saying that the product was saved successfully [CHAR LIMIT=100]-->
     <string name="Toast2">Product is saved with the row ID:</string>
+
+    <!--Error message informing about the empty field [CHAR LIMIT=100]-->
     <string name="error_msg_1">One or more values are not filled in</string>
+
+    <!-- Title for the empty view [CHAR LIMIT=50]-->
     <string name="empty_title">Not a single product is here</string>
+
+    <!-- Title to add the product [CHAR LIMIT=20]-->
     <string name="title_add_product">Add a product</string>
+
+    <!--Title to edit the product [CHAR LIMIT=20] -->
     <string name="title_edit_product">Edit product</string>
+
+    <!-- ErroR message for failing updating the product [CHAR LIMIT=50] -->
     <string name="editor_update_product_string">Failed to update</string>
+
+    <!-- Message saying that the product was updated successfully [CHAR LIMIT=100]-->
     <string name="editor_update_product_successful">Success</string>
+
+    <!--Unsaved changes dialog messages [CHAR LIMIT=50] -->
     <string name="unsaved_changes_dialog_message">Discard your changes and quit editing?</string>
+
+    <!--action discard -->
     <string name="discard">Discard</string>
+
+    <!--Notifying message to keep editing the fields [CHAR LIMIT=50] -->
     <string name="keep_editing_message">Keep editing</string>
+
+    <!--Delete product dialog message [CHAR LIMIT=20} -->
     <string name="delete_product_dialog_message">Delete this product?</string>
-    <string name="deldete_dialog_message">Delete</string>
+
+    <!--Delete dialog message [CHAR LIMIT=20] -->
+    <string name="delete_dialog_message">Delete</string>
+
+    <!-- Cancel dialog message [CHAR LIMIT=20] -->
     <string name="cancel_dialog_message">Cancel</string>
+
+    <!-- Error message for deleting the product failed [CHAR LIMIT=50] -->
     <string name="editor_delete_product_failed">Error with deleting the product</string>
+
+    <!-- Error message for deleting the product successful [CHAR LIMIT=50] -->
     <string name="editor_delete_product_successful">Product is deleted</string>
 </resources>

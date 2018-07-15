@@ -30,15 +30,13 @@ import com.example.android.inventory.data.ProductDbHelper;
  * Allows user to create a new product in the db or update the current one.
  */
 
-public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-
-    EditText price;
-    EditText quantity;
-    EditText phone;
+public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     //Identifier for the product data loader
     private static final int EXISTING_PRODUCT_LOADER = 0;
-
+    EditText price;
+    EditText quantity;
+    EditText phone;
     private Uri mCurrentProductUri;
 
     //EditText field to enter the name of the product
@@ -68,16 +66,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     //On touch listener that listens to any user touches the view, implying that they are modifying
     // the view and we change the mProductHasChanged to true
-    private View.OnTouchListener mTouchListener = new View.OnTouchListener(){
+    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
-        public boolean onTouch(View view, MotionEvent motionEvent){
+        public boolean onTouch(View view, MotionEvent motionEvent) {
             mProductHasChanged = true;
             return false;
         }
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
@@ -86,11 +84,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mCurrentProductUri = intent.getData();
 
         //If the intent does not contain the product Uri, then we know that we are creating the new product
-        if (mCurrentProductUri == null){
+        if (mCurrentProductUri == null) {
             //New product > app bar title changes to "add a product"
             setTitle(getString(R.string.title_add_product));
             invalidateOptionsMenu();
-        }else{
+        } else {
             //Otherwise this is the existing product > app bar title is being changes to "Edit product"
             setTitle(getString(R.string.title_edit_product));
             getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
@@ -127,35 +125,36 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selection = (String) parent.getItemAtPosition(position);
-                if (!TextUtils.isEmpty(selection)){
+                if (!TextUtils.isEmpty(selection)) {
                     if (selection.equals(getString(R.string.supplier_1))) {
                         mSupplier = ProductContract.ProductEntry.COMPANY_1;
-                    } else if (selection.equals(getString(R.string.supplier_2))){
+                    } else if (selection.equals(getString(R.string.supplier_2))) {
                         mSupplier = ProductContract.ProductEntry.COMPANY_2;
-                    }else{
+                    } else {
                         mSupplier = ProductContract.ProductEntry.COMPANY_3;
                     }
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-            mSupplier = ProductContract.ProductEntry.UNKNOWN_SUPPLIER;
+                mSupplier = ProductContract.ProductEntry.UNKNOWN_SUPPLIER;
             }
         });
     }
 
-    private void saveProduct(){
+    private void saveProduct() {
         String nameString = mProductNameEditText.getText().toString().trim();
         String priceString = mProductPriceEditText.getText().toString().trim();
         String quantityString = mProductQuantityEditText.getText().toString().trim();
         String phoneString = mPhoneOfSupplier.getText().toString().trim();
 
 
-      //Check is this is supposed to be a new product and check if the fields in the editor are blank
+        //Check is this is supposed to be a new product and check if the fields in the editor are blank
         if (mCurrentProductUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
                 TextUtils.isEmpty(quantityString) && TextUtils.isEmpty(phoneString) &&
-                mSupplier == ProductContract.ProductEntry.UNKNOWN_SUPPLIER){
+                mSupplier == ProductContract.ProductEntry.UNKNOWN_SUPPLIER) {
             return;
         }
 
@@ -175,13 +174,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(ProductContract.ProductEntry.COLUMN_INV_QUANTITY, quantity);
 
         int price = 0;
-        if (!TextUtils.isEmpty(priceString)){
+        if (!TextUtils.isEmpty(priceString)) {
             price = Integer.parseInt(priceString);
         }
         values.put(ProductContract.ProductEntry.COLUMN_INV_PRICE, price);
 
         int phone = 0;
-        if (!TextUtils.isEmpty(phoneString)){
+        if (!TextUtils.isEmpty(phoneString)) {
             phone = Integer.parseInt(phoneString);
         }
         values.put(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER_PHONE, phone);
@@ -200,9 +199,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         } else {
             //Otherwise this is an existing product
             int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
-            if (rowsAffected == 0){
+            if (rowsAffected == 0) {
                 Toast.makeText(this, R.string.editor_update_product_string, Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 //Otherwise the update was successful
                 Toast.makeText(this, R.string.editor_update_product_successful, Toast.LENGTH_SHORT).show();
             }
@@ -210,17 +209,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_editor, menu);
         return true;
     }
 
     //This method is called after invalidateOptionsMenu().
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu){
+    public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         //If this is a new product, hide the delete menu item
-        if(mCurrentProductUri == null){
+        if (mCurrentProductUri == null) {
             MenuItem menuItem = menu.findItem(R.id.action_delete);
             menuItem.setVisible(false);
         }
@@ -229,26 +228,26 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             //Respond to a click on the "save" menu option
             case R.id.action_save:
                 saveProduct();
                 finish();
                 return true;
-                //Respond to the click on the "delete" menu option
+            //Respond to the click on the "delete" menu option
             case R.id.action_delete:
                 showDeleteConfirmationDialog();
                 return true;
             case android.R.id.home:
                 //If the product hasn't changed then continue with navigating up to parent activity {@Link CatalogActivity}
-                if (!mProductHasChanged){
+                if (!mProductHasChanged) {
                     NavUtils.navigateUpFromSameTask(EditorActivity.this);
                     return true;
                 }
                 //Otherwise if there are unsaved changes, setup the dialog  to warn the user.
-                DialogInterface.OnClickListener discardButtonClickListener = new DialogInterface.OnClickListener(){
+                DialogInterface.OnClickListener discardButtonClickListener = new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i){
+                    public void onClick(DialogInterface dialogInterface, int i) {
                         //User clicked discard button, navigate to parent activity
                         NavUtils.navigateUpFromSameTask(EditorActivity.this);
                     }
@@ -262,15 +261,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     //This method is called when the back button is clicked
     @Override
-    public void onBackPressed(){
-        if (!mProductHasChanged){
+    public void onBackPressed() {
+        if (!mProductHasChanged) {
             super.onBackPressed();
             return;
         }
         //Otherwise if there are unsaved changes, setup the dialog to warn the user
-        DialogInterface.OnClickListener discardButtonOnClickListener = new DialogInterface.OnClickListener(){
+        DialogInterface.OnClickListener discardButtonOnClickListener = new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i){
+            public void onClick(DialogInterface dialogInterface, int i) {
                 finish();
             }
         };
@@ -278,7 +277,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle){
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] projection = {
                 ProductContract.ProductEntry._ID,
                 ProductContract.ProductEntry.COLUMN_INV_NAME,
@@ -291,11 +290,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor){
-        if (cursor == null || cursor.getCount() < 1){
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor == null || cursor.getCount() < 1) {
             return;
         }
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             // Find the columns of product attributes that we're interested in
             int nameColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_NAME);
             int priceColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_PRICE);
@@ -316,7 +315,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mProductQuantityEditText.setText(Integer.toString(quantity));
             mPhoneOfSupplier.setText(Integer.toString(phone));
 
-            switch (supplier){
+            switch (supplier) {
                 case ProductContract.ProductEntry.COMPANY_1:
                     mNameOfSupplier.setSelection(1);
                     break;
@@ -326,15 +325,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 case ProductContract.ProductEntry.COMPANY_3:
                     mNameOfSupplier.setSelection(3);
                     break;
-                    default:
-                        mNameOfSupplier.setSelection(0);
-                        break;
+                default:
+                    mNameOfSupplier.setSelection(0);
+                    break;
             }
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader){
+    public void onLoaderReset(Loader<Cursor> loader) {
         mProductNameEditText.setText("");
         mProductPriceEditText.setText("");
         mProductQuantityEditText.setText("");
@@ -343,14 +342,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     //Show the dialog that warns that there are unsaved changes that will be lost if they continue leaving the editor
-    private void showUnsavedChangesDialog(DialogInterface.OnClickListener discardButtonOnClickListener){
+    private void showUnsavedChangesDialog(DialogInterface.OnClickListener discardButtonOnClickListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.unsaved_changes_dialog_message);
         builder.setPositiveButton(R.string.discard, discardButtonOnClickListener);
         builder.setNegativeButton(R.string.keep_editing_message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                if (dialog != null){
+                if (dialog != null) {
                     dialog.dismiss();
                 }
 
@@ -362,7 +361,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         alertDialog.show();
     }
 
-    private void showDeleteConfirmationDialog(){
+    private void showDeleteConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -376,7 +375,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         builder.setNegativeButton(R.string.cancel_dialog_message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                if (dialog != null){
+                if (dialog != null) {
                     dialog.dismiss();
                 }
             }
@@ -387,12 +386,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     //Perform the deletion of the product in  the database
-    private void deleteProduct(){
-        if (mCurrentProductUri != null){
+    private void deleteProduct() {
+        if (mCurrentProductUri != null) {
             int rowsDeleted = getContentResolver().delete(mCurrentProductUri, null, null);
-            if (rowsDeleted == 0){
+            if (rowsDeleted == 0) {
                 Toast.makeText(this, R.string.editor_delete_product_failed, Toast.LENGTH_SHORT).show();
-            } else{
+            } else {
                 Toast.makeText(this, R.string.editor_delete_product_successful, Toast.LENGTH_SHORT).show();
             }
         }

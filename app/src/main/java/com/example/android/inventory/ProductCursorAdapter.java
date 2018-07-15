@@ -67,7 +67,7 @@ public class ProductCursorAdapter extends CursorAdapter{
 
         //Populate fields with extracted properties
         nameTextView.setText(itemName);
-        quantityTextView.setText(itemQuantity);
-        priceTextView.setText(itemPrice);
+        quantityTextView.setText(String.valueOf(itemQuantity));
+        priceTextView.setText(String.valueOf(itemPrice));
     }
 }
