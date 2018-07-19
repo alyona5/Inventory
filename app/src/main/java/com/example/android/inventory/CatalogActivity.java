@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.inventory.data.ProductContract;
 import com.example.android.inventory.data.ProductDbHelper;
@@ -41,6 +42,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     //EditText field to enter the quantity of the product
     private EditText mProductQuantityEditText;
+
+    private EditText mPhoneOfSupplier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,22 +91,48 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
     }
 
-    //Sold button decreases the given quantity of the products by 1
-    Button buttonSold = (Button) findViewById(R.id.button_sold);
-        buttonSold.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(Loader<Cursor> loader, Cursor cursor){
-            if (cursor == null || cursor.getCount() < 1) {
-                return;
-            }
-            if (cursor.moveToFirst()){
-                int quantitySum = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_QUANTITY);
-                int quantity = cursor.getInt(quantitySum);
-                quantity = quantity - 1;
-                display(quantity);
-            }
+    public void onClick(){
+        //The button increases the quantity by 1
+        Button increaseButton = (Button)findViewById(R.id.increase);
+        increaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText quantityEditText = findViewById(R.id.quantity);
+                String quantityString = quantityEditText.getText().toString();
+                int quantityInt = Integer.parseInt(quantityString);
+                quantityInt++;
+                quantityEditText.setText(String.valueOf(quantityInt));
 
+            }
         });
+
+        Button decreaseButton = (Button)findViewById(R.id.decrease);
+        decreaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText quantityEditText = findViewById(R.id.quantity);
+                String quantityString = quantityEditText.getText().toString();
+                int quantityInt = Integer.parseInt(quantityString);
+                quantityInt--;
+                quantityEditText.setText(String.valueOf(quantityInt));
+            }
+        });
+
+        Button callButton = (Button) findViewById(R.id.call_button);
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText phoneEditText = findViewById(R.id.supplier_phone);
+                String phone = phoneEditText.getText().toString();
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.no_phone_app, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
     //Helper method to insert hard coded data into the database, for debugging purposes only
     private void insertProduct() {
@@ -178,11 +207,4 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         mCursorAdapter.swapCursor(null);
     }
 
-    /**
-     * This method displays the given quantity of the products
-     */
-    private void display(int number) {
-        TextView quantityTextView = (TextView) findViewById(R.id.quantity_item);
-        quantityTextView.setText("" + number);
-    }
-  }
+}
