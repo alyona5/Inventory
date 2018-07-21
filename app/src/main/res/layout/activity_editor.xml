@@ -50,6 +50,26 @@
             android:hint="@string/quantity"
             android:inputType="number" />
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/increase"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="+" />
+
+            <Button
+                android:id="@+id/decrease"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="-" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <TextView
@@ -77,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_margin"
+                android:layout_marginTop="@dimen/activity_half_margin"
                 android:text="@string/supplier_name"
                 android:textSize="@dimen/text" />
 
@@ -84,6 +105,7 @@
                 android:id="@+id/spinner_supplier_name"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/spinner_height"
+                android:layout_marginLeft="@dimen/activity_half_margin"
                 android:spinnerMode="dropdown" />
 
         </LinearLayout>
@@ -109,6 +131,13 @@
                 android:layout_marginRight="@dimen/activity_margin"
                 android:layout_weight="1"
                 android:inputType="phone" />
+
+            <Button
+                android:id="@+id/call_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_margin"
+                android:text="Call" />
         </LinearLayout>
 
     </LinearLayout>

@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -37,6 +38,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     EditText price;
     EditText quantity;
     EditText phone;
+    Button increaseButton;
+    Button decreaseButton;
+    Button callButton;
     private Uri mCurrentProductUri;
 
     //EditText field to enter the name of the product
@@ -100,6 +104,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mProductQuantityEditText = (EditText) findViewById(R.id.quantity);
         mNameOfSupplier = (Spinner) findViewById(R.id.spinner_supplier_name);
         mPhoneOfSupplier = (EditText) findViewById(R.id.supplier_phone);
+        Button increaseButton = (Button)findViewById(R.id.increase);
+        Button decreaseButton = (Button) findViewById(R.id.decrease);
+        Button callButton = (Button) findViewById(R.id.call_button);
 
         //Set up onTouchListener on all input fields
         mProductNameEditText.setOnTouchListener(mTouchListener);
@@ -199,11 +206,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         } else {
             //Otherwise this is an existing product
             int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
+
             if (rowsAffected == 0) {
-                Toast.makeText(this, R.string.editor_update_product_string, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,getString(R.string.editor_update_product_string), Toast.LENGTH_SHORT).show();
             } else {
                 //Otherwise the update was successful
-                Toast.makeText(this, R.string.editor_update_product_successful, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.editor_update_product_successful), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -228,16 +236,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             //Respond to a click on the "save" menu option
             case R.id.action_save:
+                //Save product to the database
                 saveProduct();
+                //Exit the activity
                 finish();
                 return true;
             //Respond to the click on the "delete" menu option
             case R.id.action_delete:
+                //Pop up confirmation dialog for deletion
                 showDeleteConfirmationDialog();
                 return true;
+                //Respond to the click on the "Up" arrow button in the app bar
             case android.R.id.home:
                 //If the product hasn't changed then continue with navigating up to parent activity {@Link CatalogActivity}
                 if (!mProductHasChanged) {
@@ -305,7 +318,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             //Extract out the values from the cursor for the given column index
             String name = cursor.getString(nameColumnIndex);
             int price = cursor.getInt(priceColumnIndex);
-            int quantity = cursor.getInt(quantityColumnIndex);
+            final int quantity = cursor.getInt(quantityColumnIndex);
             int supplier = cursor.getInt(supplierColumnIndex);
             int phone = cursor.getInt(phoneColumnIndex);
 
@@ -329,6 +342,40 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     mNameOfSupplier.setSelection(0);
                     break;
             }
+
+            increaseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(ProductContract.ProductEntry.COLUMN_INV_QUANTITY,
+                            Integer.parseInt(mProductQuantityEditText.getText().toString().trim()) + 1);
+                    getContentResolver().update(mCurrentProductUri, contentValues, null, null);
+                }
+            });
+
+            decreaseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(ProductContract.ProductEntry.COLUMN_INV_QUANTITY,
+                            Integer.parseInt(mProductQuantityEditText.getText().toString().trim()) - 1);
+                    getContentResolver().update(mCurrentProductUri, contentValues, null, null);
+                }
+            });
+
+            callButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditText phoneEditText = findViewById(R.id.supplier_phone);
+                    String phone = phoneEditText.getText().toString();
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel:", phone, null));
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.no_phone_app, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 
@@ -366,14 +413,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_product_dialog_message);
-        builder.setPositiveButton(R.string.deldete_dialog_message, new DialogInterface.OnClickListener() {
-            @Override
+        builder.setPositiveButton(R.string.delete_dialog_message, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 deleteProduct();
             }
         });
         builder.setNegativeButton(R.string.cancel_dialog_message, new DialogInterface.OnClickListener() {
-            @Override
             public void onClick(DialogInterface dialog, int id) {
                 if (dialog != null) {
                     dialog.dismiss();
@@ -390,9 +435,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (mCurrentProductUri != null) {
             int rowsDeleted = getContentResolver().delete(mCurrentProductUri, null, null);
             if (rowsDeleted == 0) {
-                Toast.makeText(this, R.string.editor_delete_product_failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString (R.string.editor_delete_product_failed), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, R.string.editor_delete_product_successful, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.editor_delete_product_successful), Toast.LENGTH_SHORT).show();
             }
         }
         finish();

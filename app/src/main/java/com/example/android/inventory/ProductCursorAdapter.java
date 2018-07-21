@@ -1,12 +1,21 @@
 package com.example.android.inventory;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.inventory.data.ProductContract;
 
@@ -20,6 +29,7 @@ import org.w3c.dom.Text;
 
 public class ProductCursorAdapter extends CursorAdapter{
 
+    Button soldButton;
     /**
      * Constructs a new {@link ProductCursorAdapter}
      *
@@ -50,14 +60,16 @@ public class ProductCursorAdapter extends CursorAdapter{
      * @param  cursor, the cursor from which to get the data.
      */
     @Override
-    public void bindView(View view, Context context, Cursor  cursor){
+    public void bindView(View view, final Context context, Cursor  cursor){
         TextView nameTextView = (TextView)view.findViewById(R.id.name_item);
         TextView quantityTextView = (TextView) view.findViewById(R.id.quantity_item);
         TextView priceTextView = (TextView) view.findViewById(R.id.price_item);
+        soldButton = (Button)view.findViewById(R.id.button_sold);
 
         //Extract properties from Cursor
+        final int columnIndex = cursor.getInt(cursor.getColumnIndex(ProductContract.ProductEntry._ID));
         int nameColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_NAME);
-        int quantityColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_QUANTITY);
+        final int quantityColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_QUANTITY);
         int priceColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_PRICE);
 
         //Read the product attributes from the cursor to the current product
@@ -69,5 +81,26 @@ public class ProductCursorAdapter extends CursorAdapter{
         nameTextView.setText(itemName);
         quantityTextView.setText(String.valueOf(itemQuantity));
         priceTextView.setText(String.valueOf(itemPrice));
+        soldButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, columnIndex);
+                if (quantityColumnIndex == 0){
+                    Toast.makeText(context, "Nothing to sale", Toast.LENGTH_SHORT).show();
+                }else{
+                    int newQuantity = quantityColumnIndex - 1;
+                    if (newQuantity == 0){
+                        Toast.makeText(context, "Out of stock", Toast.LENGTH_SHORT).show();
+                    }
+
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(ProductContract.ProductEntry.COLUMN_INV_QUANTITY, newQuantity);
+                    context.getContentResolver().update(uri, contentValues, null, null);
+                }
+
+            }
+        });
+
     }
+
 }

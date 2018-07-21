@@ -3,6 +3,7 @@
     <dimen name="activity_margin">16dp</dimen>
     <dimen name="activity_half_margin">8dp</dimen>
     <dimen name="text">18sp</dimen>
+    <dimen name="text2">16sp</dimen>
     <dimen name="spinner_height">48dp</dimen>
     <dimen name="min_height">70dp</dimen>
 </resources>

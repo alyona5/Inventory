@@ -15,10 +15,13 @@ public class ProductProvider extends ContentProvider {
 
     //Tag for the log messages
     public static final String LOG_TAG = ProductContract.ProductEntry.class.getSimpleName();
+
     // URI matcher code for the content URI for the inventory table //
     private static final int PRODUCTS = 100;
+
     // URI matcher code for the content URI for a single product in the pets table //
     private static final int PRODUCT_ID = 101;
+
     /**
      * Uri matcher object to match a content URI to a corresponding code.
      * The input passed in the constructor represents the code to return for the root URI.

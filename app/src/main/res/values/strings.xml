@@ -53,13 +53,13 @@
     <string name="Toast1">Error with saving the product</string>
 
     <!-- Message saying that the product was saved successfully [CHAR LIMIT=100]-->
-    <string name="Toast2">Product is saved with the row ID:</string>
+    <string name="Toast2">Product is saved</string>
 
     <!--Error message informing about the empty field [CHAR LIMIT=100]-->
     <string name="error_msg_1">One or more values are not filled in</string>
 
     <!-- Title for the empty view [CHAR LIMIT=50]-->
-    <string name="empty_title">Not a single product is here</string>
+    <string name="empty_title">Not a single product is here. \n Click the + button to add a product.</string>
 
     <!-- Title to add the product [CHAR LIMIT=20]-->
     <string name="title_add_product">Add a product</string>
@@ -96,4 +96,10 @@
 
     <!-- Error message for deleting the product successful [CHAR LIMIT=50] -->
     <string name="editor_delete_product_successful">Product is deleted</string>
+
+    <!--Button name "Sold" [CHAR LIMIT=10] -->
+    <string name="button_sold">Sold</string>
+
+    <!--Error message for not available phone application on the phone [CHAR LIMIT=50]-->
+    <string name="no_phone_app">The call cannot be made. \n Please install the phone app. </string>
 </resources>

@@ -43,8 +43,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     //EditText field to enter the quantity of the product
     private EditText mProductQuantityEditText;
 
-    private EditText mPhoneOfSupplier;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,49 +87,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         //Kick off the loader
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
-    }
-
-    public void onClick(){
-        //The button increases the quantity by 1
-        Button increaseButton = (Button)findViewById(R.id.increase);
-        increaseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText quantityEditText = findViewById(R.id.quantity);
-                String quantityString = quantityEditText.getText().toString();
-                int quantityInt = Integer.parseInt(quantityString);
-                quantityInt++;
-                quantityEditText.setText(String.valueOf(quantityInt));
-
-            }
-        });
-
-        Button decreaseButton = (Button)findViewById(R.id.decrease);
-        decreaseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText quantityEditText = findViewById(R.id.quantity);
-                String quantityString = quantityEditText.getText().toString();
-                int quantityInt = Integer.parseInt(quantityString);
-                quantityInt--;
-                quantityEditText.setText(String.valueOf(quantityInt));
-            }
-        });
-
-        Button callButton = (Button) findViewById(R.id.call_button);
-        callButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText phoneEditText = findViewById(R.id.supplier_phone);
-                String phone = phoneEditText.getText().toString();
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.no_phone_app, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
     //Helper method to insert hard coded data into the database, for debugging purposes only
