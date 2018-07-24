@@ -9,7 +9,8 @@ import java.security.PublicKey;
 
 public final class ProductContract {
 
-    private ProductContract() { }
+    private ProductContract() {
+    }
 
     /**
      * Inner class that defines constant values for the inventory database table.

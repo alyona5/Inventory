@@ -32,8 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/empty_image"
             android:layout_centerHorizontal="true"
-            android:textAlignment="center"
             android:text="@string/empty_title"
+            android:textAlignment="center"
             android:textSize="18sp" />
 
 

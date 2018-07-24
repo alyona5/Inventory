@@ -20,11 +20,18 @@
         android:orientation="horizontal">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="€"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/text2"/>
+
+        <TextView
             android:id="@+id/price_item"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="test3"
+            android:text="price"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/text2" />
 
@@ -41,8 +48,8 @@
             android:id="@+id/button_sold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_sold"
-            android:onClick="myClickHandler"/>
+            android:focusable="false"
+            android:text="@string/button_sold" />
 
     </LinearLayout>
 

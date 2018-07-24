@@ -102,4 +102,10 @@
 
     <!--Error message for not available phone application on the phone [CHAR LIMIT=50]-->
     <string name="no_phone_app">The call cannot be made. \n Please install the phone app. </string>
+
+    <!-- Quantity decrease warning message 1[CHAR LIMIT=50] -->
+    <string name="quantity_decrease_message1">"Nothing to sale</string>
+
+    <!-- Quantity decrease warning message 2[CHAR LIMIT=50] -->
+    <string name="quantity_decrease_message2">"Nothing to sale</string>
 </resources>

@@ -24,20 +24,29 @@
         android:layout_marginBottom="@dimen/activity_half_margin"
         android:layout_marginLeft="@dimen/activity_margin"
         android:layout_marginRight="@dimen/activity_margin"
-        android:hint="@string/product_name" />
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:hint="@string/product_name"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:text="€" />
+
         <EditText
             android:id="@+id/price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_margin"
             android:layout_marginRight="@dimen/activity_margin"
             android:layout_weight="1"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
             android:hint="@string/price"
             android:inputType="number" />
 
@@ -47,6 +56,8 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/activity_margin"
             android:layout_weight="1"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
             android:hint="@string/quantity"
             android:inputType="number" />
 
@@ -58,14 +69,14 @@
 
             <Button
                 android:id="@+id/increase"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/button_h_w"
+                android:layout_height="@dimen/button_h_w"
                 android:text="+" />
 
             <Button
                 android:id="@+id/decrease"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/button_h_w"
+                android:layout_height="@dimen/button_h_w"
                 android:text="-" />
 
         </LinearLayout>
@@ -130,6 +141,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/activity_margin"
                 android:layout_weight="1"
+                android:focusableInTouchMode="true"
+                android:focusable="true"
                 android:inputType="phone" />
 
             <Button
@@ -139,6 +152,15 @@
                 android:layout_marginRight="@dimen/activity_margin"
                 android:text="Call" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/activity_margin"
+            android:layout_marginTop="@dimen/activity_margin"
+            android:text="delete" />
 
     </LinearLayout>
 
