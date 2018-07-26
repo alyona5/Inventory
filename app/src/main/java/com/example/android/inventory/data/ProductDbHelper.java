@@ -10,12 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ProductDbHelper extends SQLiteOpenHelper {
 
-    public static final String LOG_TAG = ProductDbHelper.class.getSimpleName();
-
-    //Name of the database file
     private static final String DATABASE_NAME = "store.db";
-
-    //Database version
     private static final int DATABASE_VERSION = 1;
 
     //Construct a new instance of {@Link ProductDbHelper}

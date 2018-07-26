@@ -37,9 +37,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private static final int EXISTING_PRODUCT_LOADER = 0;
 
 
-    Button increaseButton, decreaseButton, callButton, deleteButton;
+    Button increaseButton;
+    Button decreaseButton;
+    Button callButton;
+    Button deleteButton;
     private Uri mCurrentProductUri;
-    private EditText mProductNameEditText, mProductPriceEditText, mProductQuantityEditText, mPhoneOfSupplier;
+    private EditText mProductNameEditText;
+    private EditText mProductPriceEditText;
+    private EditText mProductQuantityEditText;
+    private EditText mPhoneOfSupplier;
     private Spinner mNameOfSupplier;
 
     /**
@@ -51,6 +57,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     //Boolean flag that keeps track whether the product has been edited
     private boolean mProductHasChanged = false;
+
+    //Boolean flag after the user tried to click 'save'
+    private boolean mPressedSave = false;
 
     //On touch listener that listens to any user touches the view, implying that they are modifying
     // the view and we change the mProductHasChanged to true
@@ -99,7 +108,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             setTitle(getString(R.string.title_edit_product));
             getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
         }
-
         setupSpinner();
     }
 
@@ -201,7 +209,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         return true;
     }
 
-    private boolean isValidData(String nameString, int quantityInteger, int priceInteger, String phoneString){
+    private boolean isValidData(String nameString, int priceInteger, int quantityInteger, String phoneString){
         boolean isValid = true;
         String message = null;
 
@@ -251,6 +259,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             MenuItem menuItem = menu.findItem(R.id.action_delete);
             menuItem.setVisible(false);
         }
+        if (mPressedSave){
+            MenuItem menuItem = menu.findItem(R.id.action_save);
+            menuItem.setEnabled(false);
+        }
         return true;
     }
 
@@ -260,11 +272,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         switch (item.getItemId()) {
             //Respond to a click on the "save" menu option
             case R.id.action_save:
-                if (saveProduct()){
-                    startActivity(new Intent(EditorActivity.this, CatalogActivity.class));
-                    finish();
+                try{
+                    mPressedSave = true;
+                    invalidateOptionsMenu();
+                    saveProduct();
+                }catch (IllegalArgumentException e){
+                    mPressedSave = false;
+                    invalidateOptionsMenu();
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    return false;
                 }
+                    finish();
                 return true;
+
             //Respond to the click on the "delete" menu option
             case R.id.action_delete:
                 //Pop up confirmation dialog for deletion

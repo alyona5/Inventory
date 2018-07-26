@@ -48,7 +48,8 @@
             android:focusableInTouchMode="true"
             android:focusable="true"
             android:hint="@string/price"
-            android:inputType="number" />
+
+            />
 
         <EditText
             android:id="@+id/quantity"
@@ -59,7 +60,8 @@
             android:focusableInTouchMode="true"
             android:focusable="true"
             android:hint="@string/quantity"
-            android:inputType="number" />
+
+            />
 
         <LinearLayout
             android:layout_width="0dp"

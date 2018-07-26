@@ -74,8 +74,6 @@ public class ProductCursorAdapter extends CursorAdapter {
         final int quantityColumnIndex = cursor.getInt(cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_QUANTITY));
         int priceColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_PRICE);
 
-
-        //Populate fields with extracted properties
         nameTextView.setText(cursor.getString(cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_NAME)));
         quantityTextView.setText(String.valueOf(quantityColumnIndex));
         priceTextView.setText(String.valueOf(cursor.getInt(cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_PRICE))));

@@ -73,7 +73,18 @@ public class ProductProvider extends ContentProvider {
         return cursor;
     }
 
-
+    @Override
+    public String getType(Uri uri) {
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PRODUCTS:
+                return ProductContract.ProductEntry.CONTENT_LIST_TYPE;
+            case PRODUCT_ID:
+                return ProductContract.ProductEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri + " with match " + match);
+        }
+    }
     //Insert new data into the provider with the given ContentValues.
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
@@ -85,121 +96,6 @@ public class ProductProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Insertion is not supported for " + uri);
         }
-    }
-
-    /**
-     * Insert a product into the database with the given content values. Return the new content URI
-     * for that specific row in the database.
-     */
-    private Uri insertProduct(Uri uri, ContentValues values) {
-        //Check that the name is not null
-        String name = values.getAsString(ProductContract.ProductEntry.COLUMN_INV_NAME);
-        if (name == null) {
-            throw new IllegalArgumentException("Name field is empty");
-        }
-
-        Integer price = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_PRICE);
-        if (price != null && price < 0) {
-            throw new IllegalArgumentException("Valid price is required");
-        }
-
-        Integer quantity = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_QUANTITY);
-        if (quantity != null && quantity < 0) {
-            throw new IllegalArgumentException("Valid quantity is required");
-        }
-
-        Integer supplier = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER);
-        if (supplier == null || !ProductContract.ProductEntry.isValidCompany(supplier)) {
-            throw new IllegalArgumentException("Supplier field is empty");
-        }
-
-        Integer supplierPhone = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER_PHONE);
-        if (supplierPhone != null && supplierPhone < 0) {
-            throw new IllegalArgumentException("Valid phone number is required");
-        }
-
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
-
-        long id = database.insert(ProductContract.ProductEntry.TABLE_NAME, null, values);
-        if (id == -1) {
-            Log.e(LOG_TAG, "Failed to insert row for " + uri);
-            return null;
-        }
-
-        //Notify all listeners that the data has changed
-        getContext().getContentResolver().notifyChange(uri, null);
-
-        return ContentUris.withAppendedId(uri, id);
-    }
-
-    //Updates the data at the given selection and selection arguments, with the new ContentValues.
-    @Override
-    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
-        final int match = sUriMatcher.match(uri);
-        switch (match) {
-            case PRODUCTS:
-                return updateProducts(uri, contentValues, selection, selectionArgs);
-            case PRODUCT_ID:
-                selection = ProductContract.ProductEntry._ID + "=?";
-                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
-                return updateProducts(uri, contentValues, selection, selectionArgs);
-            default:
-                throw new IllegalArgumentException("Update is not supported for " + uri);
-        }
-    }
-
-    private int updateProducts(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-
-        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_NAME)) {
-            String name = values.getAsString(ProductContract.ProductEntry.COLUMN_INV_NAME);
-            if (name == null) {
-                throw new IllegalArgumentException("Name field is empty");
-            }
-        }
-
-        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_PRICE)) {
-            Integer price = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_PRICE);
-            if (price != null && price < 0) {
-                throw new IllegalArgumentException("Valid price is required");
-            }
-        }
-
-        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_QUANTITY)) {
-            Integer quantity = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_QUANTITY);
-            if (quantity != null && quantity < 0) {
-                throw new IllegalArgumentException("Valid quantity is required");
-            }
-        }
-
-        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER)) {
-            Integer supplier = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER);
-            if (supplier == null || !ProductContract.ProductEntry.isValidCompany(supplier)) {
-                throw new IllegalArgumentException("Supplier field is empty");
-            }
-        }
-
-        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER_PHONE)) {
-            Integer supplierPhone = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER_PHONE);
-            if (supplierPhone != null && supplierPhone < 0) {
-                throw new IllegalArgumentException("Valid phone number is required");
-            }
-        }
-
-        if (values.size() == 0) {
-            return 0;
-        }
-
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
-
-        //Perform the update on the database and get the number of the rows affected
-        int rowsUpdated = database.update(ProductContract.ProductEntry.TABLE_NAME, values, selection, selectionArgs);
-
-        //If 1 or more rows are updated, then notify all the listeners that the data at the given URI has changed
-        if (rowsUpdated != 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
-        }
-
-        return rowsUpdated;
     }
 
     //Delete the data at the given selection and selection arguments
@@ -233,16 +129,136 @@ public class ProductProvider extends ContentProvider {
         return rowsDeleted;
     }
 
+    //Updates the data at the given selection and selection arguments, with the new ContentValues.
     @Override
-    public String getType(Uri uri) {
+    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PRODUCTS:
-                return ProductContract.ProductEntry.CONTENT_LIST_TYPE;
+                return updateProducts(uri, contentValues, selection, selectionArgs);
             case PRODUCT_ID:
-                return ProductContract.ProductEntry.CONTENT_ITEM_TYPE;
+                selection = ProductContract.ProductEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                return updateProducts(uri, contentValues, selection, selectionArgs);
             default:
-                throw new IllegalArgumentException("Unknown URI " + uri + " with match " + match);
+                throw new IllegalArgumentException("Update is not supported for " + uri);
         }
+    }
+
+    private int updateProducts(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        if (values.size() == 0) {
+            return 0;
+        }
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_NAME)) {
+            String name = values.getAsString(ProductContract.ProductEntry.COLUMN_INV_NAME);
+            if (name == null) {
+                throw new IllegalArgumentException("Name of the product is required");
+            }
+        }
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_PRICE)) {
+            Integer price = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_PRICE);
+            if (price == null || price < 0) {
+                throw new IllegalArgumentException("Valid price is required");
+            }
+        }
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_QUANTITY)) {
+            Integer quantity = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_QUANTITY);
+            if (quantity == null || quantity < 0) {
+                throw new IllegalArgumentException("Valid quantity is required");
+            }
+        }
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER)) {
+            Integer supplier = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER);
+            if (supplier == null || !ProductContract.ProductEntry.isValidCompany(supplier)) {
+                throw new IllegalArgumentException("Supplier field is empty");
+            }
+        }
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER_PHONE)) {
+            Integer supplierPhone = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER_PHONE);
+            if (supplierPhone != null && supplierPhone < 0) {
+                throw new IllegalArgumentException("Valid phone number is required");
+            }
+        }
+
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        //Perform the update on the database and get the number of the rows affected
+        int rowsUpdated = database.update(ProductContract.ProductEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        //If 1 or more rows are updated, then notify all the listeners that the data at the given URI has changed
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsUpdated;
+    }
+
+
+    /**
+     * Insert a product into the database with the given content values. Return the new content URI
+     * for that specific row in the database.
+     *
+     *  /**
+     * Insert a product into the database with the given content values. Return the new content URI
+     * for that specific row in the database.
+     */
+    private Uri insertProduct(Uri uri, ContentValues values) {
+        isValidData(values);
+
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        long newRow = db.insert(ProductContract.ProductEntry.TABLE_NAME, null, values);
+        if (newRow == -1) {
+            return null;
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        return ContentUris.withAppendedId(uri, newRow);
+    }
+
+    private boolean isValidData(ContentValues values){
+        boolean flag = true;
+
+        String name = values.getAsString(ProductContract.ProductEntry.COLUMN_INV_NAME);
+        if (name == null ) {
+            flag = false;
+            throw new IllegalArgumentException("Name of the product is required");
+        }
+
+        Integer price = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_PRICE);
+        if (price == null || price < 0) {
+            flag = false;
+            throw new IllegalArgumentException("Valid price is required");
+        }
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_QUANTITY)) {
+            Integer quantity = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_QUANTITY);
+            if (quantity == null || quantity < 0) {
+                flag = false;
+                throw new IllegalArgumentException("Valid quantity is required");
+            }
+        }
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER)) {
+            Integer supplier = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER);
+            if (supplier == null || !ProductContract.ProductEntry.isValidCompany(supplier)) {
+                flag = false;
+                throw new IllegalArgumentException("Supplier field is empty");
+            }
+        }
+
+        if (values.containsKey(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER_PHONE)) {
+            Integer supplierPhone = values.getAsInteger(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER_PHONE);
+            if (supplierPhone != null && supplierPhone < 0) {
+                flag = false;
+                throw new IllegalArgumentException("Valid phone number is required");
+            }
+        }
+
+        return flag;
     }
 }

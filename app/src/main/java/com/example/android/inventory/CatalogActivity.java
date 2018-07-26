@@ -29,7 +29,6 @@ import com.example.android.inventory.data.ProductDbHelper;
 
 import java.net.ProxySelector;
 import java.util.PriorityQueue;
-
 //Displays list of products that were entered and stored in the app
 
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
