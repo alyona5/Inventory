@@ -33,13 +33,10 @@ import java.util.PriorityQueue;
 
 public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    //Identifier for the product data loader
     private static final int PRODUCT_LOADER = 0;
 
-    //Adapter for the list view
     ProductCursorAdapter mCursorAdapter;
 
-    //EditText field to enter the quantity of the product
     private EditText mProductQuantityEditText;
 
     @Override
@@ -49,7 +46,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         mProductQuantityEditText = (EditText) findViewById(R.id.quantity);
 
-        //Setup FAB to open the EditorActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,14 +55,11 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
-        // Find the ListView which will be populated with the pet data
         ListView productListView = (ListView) findViewById(R.id.list);
 
-        //Find and set empty view on the ListView, so that it only shows when the list has 0 items
         View emptyView = findViewById(R.id.empty_view);
         productListView.setEmptyView(emptyView);
 
-        //Setup an adapter to create a list item for each row of pet data in cursor
         mCursorAdapter = new ProductCursorAdapter(this, null);
         productListView.setAdapter(mCursorAdapter);
 
@@ -84,14 +77,11 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             }
         });
 
-        //Kick off the loader
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
     }
 
     //Helper method to insert hard coded data into the database, for debugging purposes only
     private void insertProduct() {
-        //Create a ContentValues object where column names are the keys, and
-        //product's attributes are the values
         ContentValues values = new ContentValues();
         values.put(ProductContract.ProductEntry.COLUMN_INV_NAME, "Inferno");
         values.put(ProductContract.ProductEntry.COLUMN_INV_PRICE, 600);
@@ -110,21 +100,16 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_catalog.xml file.
-        // This adds menu items to the app bar.
         getMenuInflater().inflate(R.menu.menu_catalog, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
-            // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 insertProduct();
                 return true;
-            // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_entries:
                 deleteAllProducts();
                 return true;
@@ -134,7 +119,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        //Projection that specifies the columns from the table
         String[] projection = {
                 ProductContract.ProductEntry._ID,
                 ProductContract.ProductEntry.COLUMN_INV_NAME,
@@ -160,5 +144,4 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         //Callback is called when the data is needed to be deleted
         mCursorAdapter.swapCursor(null);
     }
-
 }

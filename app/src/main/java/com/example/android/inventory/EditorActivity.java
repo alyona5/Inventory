@@ -148,16 +148,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String phoneString = mPhoneOfSupplier.getText().toString().trim();
 
         int priceInteger;
-        try{
+        try {
             priceInteger = Integer.parseInt(mProductPriceEditText.getText().toString().trim());
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             priceInteger = -1;
         }
 
         int quantityInteger;
-        try{
+        try {
             quantityInteger = Integer.parseInt(mProductQuantityEditText.getText().toString().trim());
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             quantityInteger = -1;
         }
 
@@ -172,9 +172,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return false;
         }
 
-        if (!isValidData(nameString, priceInteger, quantityInteger, phoneString)){
-            return false;
-        }
 
         //ContentValue object where the column names are the keys and product attributes from the editor are the values
         ContentValues values = new ContentValues();
@@ -196,7 +193,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 Toast.makeText(this, R.string.Toast2, Toast.LENGTH_SHORT).show();
             }
         } else {
-            //Otherwise this is an existing product
             int rowsAffected = getContentResolver().update(mCurrentProductUri, values, null, null);
 
             if (rowsAffected == 0) {
@@ -209,40 +205,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         return true;
     }
 
-    private boolean isValidData(String nameString, int priceInteger, int quantityInteger, String phoneString){
-        boolean isValid = true;
-        String message = null;
-
-        if (nameString == null || nameString.isEmpty()){
-            message = "The name of the product is missing";
-            isValid = false;
-            mProductNameEditText.requestFocus();
-        }
-
-        if (priceInteger < 0 ){
-            message = "The price of the product is missing";
-            isValid = false;
-            mProductPriceEditText.requestFocus();
-        }
-
-        if (quantityInteger < 0){
-            message = "The quantity of the product is missing";
-            isValid = false;
-            mProductQuantityEditText.requestFocus();
-        }
-
-        if (phoneString == null || phoneString.isEmpty()){
-            message = "The phone number of the supplier is missing";
-            isValid = false;
-            mPhoneOfSupplier.requestFocus();
-        }
-
-
-        if (message != null && !message.isEmpty()){
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        }
-        return isValid;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -254,12 +216,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        //If this is a new product, hide the delete menu item
         if (mCurrentProductUri == null) {
             MenuItem menuItem = menu.findItem(R.id.action_delete);
             menuItem.setVisible(false);
         }
-        if (mPressedSave){
+        if (mPressedSave) {
             MenuItem menuItem = menu.findItem(R.id.action_save);
             menuItem.setEnabled(false);
         }
@@ -268,40 +229,33 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
-            //Respond to a click on the "save" menu option
             case R.id.action_save:
-                try{
+                try {
                     mPressedSave = true;
                     invalidateOptionsMenu();
                     saveProduct();
-                }catch (IllegalArgumentException e){
+                } catch (IllegalArgumentException e) {
                     mPressedSave = false;
                     invalidateOptionsMenu();
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     return false;
                 }
-                    finish();
+                finish();
                 return true;
 
-            //Respond to the click on the "delete" menu option
             case R.id.action_delete:
-                //Pop up confirmation dialog for deletion
                 showDeleteConfirmationDialog();
                 return true;
-            //Respond to the click on the "Up" arrow button in the app bar
             case android.R.id.home:
-                //If the product hasn't changed then continue with navigating up to parent activity {@Link CatalogActivity}
                 if (!mProductHasChanged) {
                     NavUtils.navigateUpFromSameTask(EditorActivity.this);
                     return true;
                 }
-                //Otherwise if there are unsaved changes, setup the dialog  to warn the user.
+
                 DialogInterface.OnClickListener discardButtonClickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //User clicked discard button, navigate to parent activity
                         NavUtils.navigateUpFromSameTask(EditorActivity.this);
                     }
                 };
@@ -319,7 +273,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             super.onBackPressed();
             return;
         }
-        //Otherwise if there are unsaved changes, setup the dialog to warn the user
+
         DialogInterface.OnClickListener discardButtonOnClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -351,7 +305,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Find the columns of product attributes that we're interested in
             int nameColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_NAME);
             int priceColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_PRICE);
-            int quantityColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_QUANTITY);
+            final int quantityColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_QUANTITY);
             int supplierColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER);
             int phoneColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_INV_SUPPLIER_PHONE);
 
@@ -391,6 +345,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     contentValues.put(ProductContract.ProductEntry.COLUMN_INV_QUANTITY,
                             Integer.parseInt(mProductQuantityEditText.getText().toString().trim()) + 1);
                     getContentResolver().update(mCurrentProductUri, contentValues, null, null);
+
                 }
             });
 
@@ -398,10 +353,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             decreaseButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put(ProductContract.ProductEntry.COLUMN_INV_QUANTITY,
-                            Integer.parseInt(mProductQuantityEditText.getText().toString().trim()) - 1);
-                    getContentResolver().update(mCurrentProductUri, contentValues, null, null);
+                    if (Integer.parseInt(mProductQuantityEditText.getText().toString().trim()) <= 0) {
+                        Toast.makeText(EditorActivity.this, "Out of stock", Toast.LENGTH_SHORT).show();
+                    } else {
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(ProductContract.ProductEntry.COLUMN_INV_QUANTITY,
+                                Integer.parseInt(mProductQuantityEditText.getText().toString().trim()) - 1);
+                        getContentResolver().update(mCurrentProductUri, contentValues, null, null);
+                    }
+                }
+            });
+
+            //Delete button in the detailed list item view
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteButton.setEnabled(false);
+                    showDeleteConfirmationDialog();
                 }
             });
 
@@ -416,16 +384,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     } else {
                         Toast.makeText(getApplicationContext(), R.string.no_phone_app, Toast.LENGTH_SHORT).show();
                     }
-                }
-            });
-
-
-            //Delete button in the detailed list item view
-            deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    deleteButton.setEnabled(false);
-                    showDeleteConfirmationDialog();
                 }
             });
 
